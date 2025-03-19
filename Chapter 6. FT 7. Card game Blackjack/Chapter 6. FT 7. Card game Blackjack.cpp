@@ -1,9 +1,9 @@
 ﻿#include <iostream>
 #include <array>
-#include <cstdlib> //для функций rand() и srand()
-#include <ctime> //для функции time()
+#include <cstdlib> // for functions rand() and srand()
+#include <ctime> // for function time()
 
-//Колода карт представлена перечеслениями масти и их достоинством
+// The deck of cards is represented by enumerations of suits and their ranks
 enum CardSuit
 {
     SUIT_CLUBS,
@@ -38,14 +38,13 @@ enum BlackjackResult
     BLACKJACK_DRAW
 };
 
-//Каждая карта в колоде представлена структурой, где хранится информация о достоинстве и масти карты
-struct Card
+// Each card in the deck is represented by a structure that stores information about its rank and suit
 {
     CardRank rank;
     CardSuit suit;
 };
 
-//Вывод значения достоинства и масти определенной карты
+// Output the rank and suit of a specific card
 void printCard(const Card &card)
 {
     switch (card.rank)
@@ -74,7 +73,7 @@ void printCard(const Card &card)
     }
 }
 
-//Вывод всей колоды карт
+// Output the entire deck of cards
 void printDeck(const std::array<Card, 52>& deck)
 {
     for (const auto &i : deck)
@@ -85,7 +84,7 @@ void printDeck(const std::array<Card, 52>& deck)
     std::cout << '\n';
 }
 
-//Замена местами значений двух карт
+// Swap the values of two cards
 void swapCard(Card &a, Card &b)
 {
     Card temp = a;
@@ -100,7 +99,7 @@ int getRandomNumber(int min, int max)
     return static_cast<int>(rand() * fraction * (max - min + 1) + min);
 }
 
-//Перетасовка колоды карт
+// Shuffle the deck of cards
 void shuffleDeck(std::array<Card, 52> &deck)
 {
     for (int i = 0; i < 52; ++i)
@@ -110,7 +109,7 @@ void shuffleDeck(std::array<Card, 52> &deck)
     }
 }
 
-//Получение значения карты
+// Get the value of a card
 int getCardValue(const Card &card)
 {
     switch (card.rank)
@@ -138,12 +137,12 @@ BlackjackResult playBlackjack(const std::array<Card, 52> &deck)
 {
     const Card *cardPtr = &deck[0];
 
-    //раздача карт игроку и дилеру
+    // Dealing cards to the player and the dealer
     int dealerScore = getCardValue(*cardPtr++);
     int playerScore = getCardValue(*cardPtr++) + getCardValue(*cardPtr++);
     int choice;
 
-    //ход игрока
+    // Player's turn
     do
     {
         std::cout << "DealerScore: " << dealerScore << std::endl;
@@ -164,7 +163,7 @@ BlackjackResult playBlackjack(const std::array<Card, 52> &deck)
         return BLACKJACK_DEALER_WIN;
     }
 
-    //Ход дилера
+    // Dealer's turn
     while (dealerScore < 17)
     {
         dealerScore += getCardValue(*cardPtr++);
@@ -193,10 +192,10 @@ BlackjackResult playBlackjack(const std::array<Card, 52> &deck)
 
 int main()
 {
-    srand(static_cast<unsigned int>(time(0))); // устанавка значения системных часов в качестве стартового числа для генерации СЧ
-    rand(); // Первый вызов rand() для сброса результата этой функции (для большего отличия первого рандомного числа от стартового)
+    srand(static_cast<unsigned int>(time(0))); // Set the system clock value as the seed for the random number generator
+    rand(); // First call to rand() to reset the result of this function (for a greater difference in the first random number from the initial one)
 
-    //Представление целой колоды карт
+    // Representing the entire deck of cards
     std::array<Card, 52> deck{ };
 
     int card = 0;
@@ -208,7 +207,7 @@ int main()
             ++card;
         }
 
-    //Перетасовка колоды карт
+    // Shuffle the deck of cards
     shuffleDeck(deck);
 
     int result = playBlackjack(deck);
